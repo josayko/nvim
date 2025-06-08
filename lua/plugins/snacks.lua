@@ -5,9 +5,27 @@ return {
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
-    dashboard = { enabled = false },
-    explorer = { enabled = true },
-    indent = { enabled = false },
+    dashboard = {
+      enabled = true,
+      preset = {
+        header = {
+          [[                                                                       
+                                                                   
+      ████ ██████           █████      ██                    
+     ███████████             █████                            
+     █████████ ███████████████████ ███   ███████████  
+    █████████  ███    █████████████ █████ ██████████████  
+   █████████ ██████████ █████████ █████ █████ ████ █████  
+ ███████████ ███    ███ █████████ █████ █████ ████ █████ 
+██████  █████████████████████ ████ █████ █████ ████ ██████
+          ]],
+        },
+      },
+    },
+    explorer = {
+      enabled = true,
+    },
+    indent = { enabled = true },
     input = { enabled = true },
     notifier = {
       enabled = true,

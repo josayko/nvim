@@ -15,7 +15,11 @@ return {
   settings = {
     Lua = {
       diagnostics = {
-        disable = { "missing-fields" },
+        disable = {
+          "missing-fields",
+          "duplicate-set-field",
+          "undefined-doc-name",
+        },
         globals = {
           "vim",
           "Snacks",

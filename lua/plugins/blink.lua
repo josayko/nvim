@@ -5,9 +5,14 @@ return {
     dependencies = {
       "rafamadriz/friendly-snippets",
     },
+    -- event = "InsertEnter",
     version = "*",
-    build = "cargo +nightly build --release",
     config = function()
+      vim.cmd("highlight Pmenu guibg=none")
+      vim.cmd("highlight PmenuExtra guibg=none")
+      vim.cmd("highlight FloatBorder guibg=none")
+      vim.cmd("highlight NormalFloat guibg=none")
+
       require("blink.cmp").setup({
         snippets = { preset = "luasnip" },
         signature = { enabled = true },
@@ -16,6 +21,9 @@ return {
           nerd_font_variant = "normal",
         },
         sources = {
+          -- per_filetype = {
+          --   codecompanion = { "codecompanion" },
+          -- },
           default = { "lsp", "path", "snippets", "buffer" },
           providers = {
             cmdline = {
@@ -24,7 +32,7 @@ return {
           },
         },
         keymap = {
-          ["<C-f>"] = {},
+          ["<Tab>"] = { "accept", "fallback" },
         },
         cmdline = {
           enabled = false,
