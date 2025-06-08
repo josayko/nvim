@@ -4,9 +4,9 @@ vim.lsp.enable({
 })
 
 vim.diagnostic.config({
-  virtual_lines = false,
-  -- virtual_text = true,
-  underline = true,
+  virtual_lines = { current_line = true },
+  virtual_text = false,
+  underline = false,
   update_in_insert = false,
   severity_sort = true,
   float = {
@@ -26,3 +26,9 @@ vim.diagnostic.config({
     },
   },
 })
+
+function Toggle_diagnostics()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end
+
+vim.keymap.set("n", "<leader>ds", "<cmd>lua Toggle_diagnostics()<cr>", { desc = "Toggle diagnostics" })

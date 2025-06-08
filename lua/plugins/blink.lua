@@ -8,10 +8,10 @@ return {
     -- event = "InsertEnter",
     version = "*",
     config = function()
-      vim.cmd("highlight Pmenu guibg=none")
-      vim.cmd("highlight PmenuExtra guibg=none")
-      vim.cmd("highlight FloatBorder guibg=none")
-      vim.cmd("highlight NormalFloat guibg=none")
+      -- vim.cmd("highlight Pmenu guibg=none")
+      -- vim.cmd("highlight PmenuExtra guibg=none")
+      -- vim.cmd("highlight FloatBorder guibg=none")
+      -- vim.cmd("highlight NormalFloat guibg=none")
 
       require("blink.cmp").setup({
         snippets = { preset = "luasnip" },
@@ -52,6 +52,26 @@ return {
                 { "label", "label_description", gap = 1 },
                 { "kind" },
                 { "source_name" },
+              },
+              components = {
+                kind_icon = {
+                  text = function(ctx)
+                    local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                    return kind_icon
+                  end,
+                  -- (optional) use highlights from mini.icons
+                  highlight = function(ctx)
+                    local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                    return hl
+                  end,
+                },
+                kind = {
+                  -- (optional) use highlights from mini.icons
+                  highlight = function(ctx)
+                    local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                    return hl
+                  end,
+                },
               },
             },
           },
