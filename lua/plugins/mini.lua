@@ -5,6 +5,9 @@ return {
     config = function()
       require("mini.icons").setup({
         lazy = true,
+        lsp = {
+          copilot = { glyph = "" },
+        },
       })
       -- mock nvim-web-devicons to use mini.icons instead
       require("mini.icons").mock_nvim_web_devicons()
