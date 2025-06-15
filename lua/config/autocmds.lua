@@ -21,5 +21,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("<leader>lr", vim.lsp.buf.rename, "Rename all references")
     map("<leader>lf", vim.lsp.buf.format, "Format")
     map("<leader>v", "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>", "Goto Definition in Vertical Split")
+
+    -- Make LSP references bold
+    vim.api.nvim_set_hl(0, "LspReferenceText", { bold = true, nocombine = true })
+    vim.api.nvim_set_hl(0, "LspReferenceRead", { bold = true, nocombine = true })
+    vim.api.nvim_set_hl(0, "LspReferenceWrite", { bold = true, nocombine = true })
   end,
 })
