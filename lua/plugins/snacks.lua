@@ -590,6 +590,8 @@ return {
     },
   },
   init = function()
+    vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#3c4555" })
+    vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#4c566a" })
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()

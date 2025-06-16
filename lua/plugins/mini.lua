@@ -14,6 +14,9 @@ return {
       require("mini.pairs").setup({
         lazy = true,
       })
+      require("mini.surround").setup({
+        lazy = true,
+      })
       require("mini.sessions").setup({})
     end,
   },
