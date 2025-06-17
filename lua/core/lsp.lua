@@ -2,6 +2,9 @@ vim.lsp.enable({
   "gopls",
   "lua_ls",
   "pyright",
+  "ts_ls",
+  "vue_ls",
+  "eslint",
 })
 
 vim.diagnostic.config({
