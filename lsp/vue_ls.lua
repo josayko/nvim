@@ -1,5 +1,11 @@
 return {
   filetypes = {
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
     "vue",
   },
   root_markers = {
@@ -11,7 +17,7 @@ return {
   init_options = {
     vue = {
       -- disable hybrid mode
-      -- hybridMode = false,
+      hybridMode = false,
     },
   },
 }

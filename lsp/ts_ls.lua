@@ -7,7 +7,6 @@ return {
     "typescript",
     "typescriptreact",
     "typescript.tsx",
-    "vue",
   },
   root_markers = { "tsconfig.json", "package.json", ".git" },
   init_options = {
@@ -18,7 +17,7 @@ return {
         name = "@vue/typescript-plugin",
         -- Change the localtion to the path where the language-server is installed
         location = "/Users/josayko/.local/share/mise/installs/node/22.16.0/lib/node_modules/@vue/language-server",
-        languages = { "javascript", "typescript", "vue" },
+        languages = { "vue" },
       },
     },
   },
