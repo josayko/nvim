@@ -29,6 +29,7 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.opt.winborder = "rounded"
+vim.opt.swapfile = false
 
 -- Set floating window maximum width and length
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview

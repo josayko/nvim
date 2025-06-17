@@ -22,6 +22,7 @@ return {
         "c",
         "html",
         "javascript",
+        "typescript",
         "json",
         "lua",
         "luadoc",
@@ -36,6 +37,8 @@ return {
         "gomod",
         "gowork",
         "gosum",
+        "python",
+        "vue",
       },
       incremental_selection = {
         enable = true,
