@@ -18,6 +18,27 @@ return {
         lazy = true,
       })
       require("mini.sessions").setup({})
+      require("mini.git").setup({
+        lazy = false,
+        mappings = {
+          status = "<leader>gs",
+          blame = "<leader>gb",
+          diff = "<leader>gd",
+          log = "<leader>gl",
+          branch = "<leader>gb",
+          commit = "<leader>gc",
+          stash = "<leader>gS",
+          reset = "<leader>gr",
+          remote = "<leader>grm",
+        },
+      })
+      require("mini.diff").setup({
+        lazy = true,
+        mappings = {
+          next_hunk_preview = "]h",
+          prev_hunk_preview = "[h",
+        },
+      })
     end,
   },
 }
