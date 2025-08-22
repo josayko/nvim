@@ -8,7 +8,7 @@ return {
     "typescriptreact",
     "typescript.tsx",
   },
-  root_markers = { "tsconfig.json", "package.json", ".git" },
+  root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
   init_options = {
     plugins = {
       {
