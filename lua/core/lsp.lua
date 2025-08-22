@@ -1,11 +1,34 @@
-vim.lsp.enable({
+local lspconfig = require("lspconfig")
+
+-- Load server configurations from the lsp directory
+local function load_lsp_config(server_name)
+  local config_path = vim.fn.stdpath("config") .. "/lsp/" .. server_name .. ".lua"
+  if vim.fn.filereadable(config_path) == 1 then
+    return dofile(config_path)
+  else
+    return {}
+  end
+end
+
+local servers = {
   "gopls",
   "lua_ls",
   "pyright",
   "ts_ls",
-  "vue_ls",
-  "eslint",
-})
+}
+
+-- Enable standard servers
+for _, server in ipairs(servers) do
+  local config = load_lsp_config(server)
+  lspconfig[server].setup(config)
+end
+
+-- Setup Vue.js language server
+vim.lsp.enable("vue_ls")
+
+-- Setup ESLint with custom configuration
+local eslint_config = load_lsp_config("eslint")
+lspconfig.eslint.setup(eslint_config)
 
 vim.diagnostic.config({
   virtual_lines = { current_line = true },

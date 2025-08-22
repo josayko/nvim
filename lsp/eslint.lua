@@ -1,5 +1,4 @@
 local util = require("lspconfig.util")
-local lsp = vim.lsp
 
 return {
   cmd = { "vscode-eslint-language-server", "--stdio" },
@@ -14,42 +13,34 @@ return {
     "svelte",
     "astro",
   },
-  workspace_required = true,
   on_attach = function(client, bufnr)
-    vim.api.nvim_buf_create_user_command(0, "LspEslintFixAll", function()
-      client:request_sync("workspace/executeCommand", {
+    vim.api.nvim_buf_create_user_command(bufnr, "LspEslintFixAll", function()
+      client:request("workspace/executeCommand", {
         command = "eslint.applyAllFixes",
         arguments = {
           {
             uri = vim.uri_from_bufnr(bufnr),
-            version = lsp.util.buf_versions[bufnr],
+            version = vim.lsp.util.buf_versions[bufnr],
           },
         },
-      }, nil, bufnr)
+      })
     end, {})
   end,
-  -- https://eslint.org/docs/user-guide/configuring/configuration-files#configuration-file-formats
-  root_dir = function(bufnr, on_dir)
-    local root_file_patterns = {
-      ".eslintrc",
-      ".eslintrc.js",
-      ".eslintrc.cjs",
-      ".eslintrc.yaml",
-      ".eslintrc.yml",
-      ".eslintrc.json",
-      "eslint.config.js",
-      "eslint.config.mjs",
-      "eslint.config.cjs",
-      "eslint.config.ts",
-      "eslint.config.mts",
-      "eslint.config.cts",
-    }
-
-    local fname = vim.api.nvim_buf_get_name(bufnr)
-    root_file_patterns = util.insert_package_json(root_file_patterns, "eslintConfig", fname)
-    on_dir(vim.fs.dirname(vim.fs.find(root_file_patterns, { path = fname, upward = true })[1]))
-  end,
-  -- Refer to https://github.com/Microsoft/vscode-eslint#settings-options for documentation.
+  root_dir = util.root_pattern(
+    ".eslintrc",
+    ".eslintrc.js",
+    ".eslintrc.cjs",
+    ".eslintrc.yaml",
+    ".eslintrc.yml",
+    ".eslintrc.json",
+    "eslint.config.js",
+    "eslint.config.mjs",
+    "eslint.config.cjs",
+    "eslint.config.ts",
+    "eslint.config.mts",
+    "eslint.config.cts",
+    "package.json"
+  ),
   settings = {
     validate = "on",
     packageManager = nil,
@@ -69,10 +60,7 @@ return {
     problems = {
       shortenToSingleLine = false,
     },
-    -- nodePath configures the directory in which the eslint server should start its node_modules resolution.
-    -- This path is relative to the workspace folder (root dir) of the server instance.
     nodePath = "",
-    -- use the workspace folder location or the file location (if no workspace folder is open) as the working directory
     workingDirectory = { mode = "location" },
     codeAction = {
       disableRuleComment = {
@@ -85,15 +73,11 @@ return {
     },
   },
   before_init = function(_, config)
-    -- The "workspaceFolder" is a VSCode concept. It limits how far the
-    -- server will traverse the file system when locating the ESLint config
-    -- file (e.g., .eslintrc).
     local root_dir = config.root_dir
-
     if root_dir then
       config.settings = config.settings or {}
       config.settings.workspaceFolder = {
-        uri = root_dir,
+        uri = vim.uri_from_fname(root_dir),
         name = vim.fn.fnamemodify(root_dir, ":t"),
       }
 
@@ -113,14 +97,6 @@ return {
           config.settings.experimental.useFlatConfig = true
           break
         end
-      end
-
-      -- Support Yarn2 (PnP) projects
-      local pnp_cjs = root_dir .. "/.pnp.cjs"
-      local pnp_js = root_dir .. "/.pnp.js"
-      if vim.uv.fs_stat(pnp_cjs) or vim.uv.fs_stat(pnp_js) then
-        local cmd = config.cmd
-        config.cmd = vim.list_extend({ "yarn", "exec" }, cmd)
       end
     end
   end,
