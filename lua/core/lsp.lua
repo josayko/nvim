@@ -11,6 +11,7 @@ local function load_lsp_config(server_name)
 end
 
 local servers = {
+  "eslint",
   "gopls",
   "lua_ls",
   "pyright",
@@ -26,9 +27,12 @@ end
 -- Setup Vue.js language server
 vim.lsp.enable("vue_ls")
 
--- Setup ESLint with custom configuration
-local eslint_config = load_lsp_config("eslint")
-lspconfig.eslint.setup(eslint_config)
+-- Setup Elixir - Expert language server
+vim.lsp.enable("expert")
+
+-- -- Setup ESLint with custom configuration
+-- local eslint_config = load_lsp_config("eslint")
+-- lspconfig.eslint.setup(eslint_config)
 
 vim.diagnostic.config({
   virtual_lines = { current_line = true },
