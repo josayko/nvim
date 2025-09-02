@@ -28,7 +28,7 @@ end
 vim.lsp.enable("vue_ls")
 
 -- Setup Elixir - Expert language server
-vim.lsp.enable("expert")
+-- vim.lsp.enable("expert")
 
 -- -- Setup ESLint with custom configuration
 -- local eslint_config = load_lsp_config("eslint")
