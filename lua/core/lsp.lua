@@ -1,5 +1,3 @@
-local lspconfig = require("lspconfig")
-
 -- Load server configurations from the lsp directory
 local function load_lsp_config(server_name)
   local config_path = vim.fn.stdpath("config") .. "/lsp/" .. server_name .. ".lua"
@@ -21,7 +19,8 @@ local servers = {
 -- Enable standard servers
 for _, server in ipairs(servers) do
   local config = load_lsp_config(server)
-  lspconfig[server].setup(config)
+  vim.lsp.config[server] = config
+  vim.lsp.enable(server)
 end
 
 -- Setup Vue.js language server
