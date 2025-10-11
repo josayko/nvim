@@ -7,6 +7,7 @@ return {
         lua = { "stylua" },
         go = { "goimports", "golines", "gofmt" },
         python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
+        ocaml = { "ocamlformat" },
       },
       format_on_save = {
         lsp_fallback = true,

@@ -31,6 +31,9 @@ vim.opt.scrolloff = 10
 vim.opt.winborder = "rounded"
 vim.opt.swapfile = false
 
+-- OCaml ocp-indent configuration
+vim.opt.runtimepath:prepend("/Users/josayko/.opam/default/share/ocp-indent/vim")
+
 -- Set floating window maximum width and length
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)

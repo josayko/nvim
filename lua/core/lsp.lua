@@ -12,6 +12,7 @@ local servers = {
   "eslint",
   "gopls",
   "lua_ls",
+  "ocamllsp",
   "pyright",
   "ts_ls",
 }
