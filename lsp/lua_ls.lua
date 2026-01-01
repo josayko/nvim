@@ -14,6 +14,11 @@ return {
   },
   settings = {
     Lua = {
+      workspace = {
+        userThirdParty = { vim.fn.expand("~/.local/share/nvim/lsp-addons") },
+        checkThirdParty = "Apply",
+      },
+      runtime = { version = "LuaJIT" },
       diagnostics = {
         disable = {
           "missing-fields",
@@ -23,6 +28,7 @@ return {
         globals = {
           "vim",
           "Snacks",
+          "love",
         },
       },
       hint = {
