@@ -39,6 +39,9 @@ return {
         "gosum",
         "python",
         "vue",
+        "elixir",
+        "heex",
+        "eex",
       },
       incremental_selection = {
         enable = true,

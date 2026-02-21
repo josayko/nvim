@@ -34,6 +34,12 @@ vim.opt.swapfile = false
 -- OCaml ocp-indent configuration
 vim.opt.runtimepath:prepend("/Users/josayko/.opam/default/share/ocp-indent/vim")
 
+-- Enable Treesitter-based folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false  -- Don't fold by default when opening files
+vim.opt.foldlevel = 99       -- High value means most folds will be open by default
+
 -- Set floating window maximum width and length
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
