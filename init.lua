@@ -4,8 +4,12 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 -- Prevents showing extra messages when using completion
 vim.opt.shortmess:append("c")
+-- Disable displaying mode
+vim.opt.showmode = false
 -- Sets the height of the command line area at the bottom
-vim.opt.cmdheight = 2
+vim.opt.cmdheight = 0
+-- Use a single global statusline
+vim.opt.laststatus = 3
 -- Displays the line number for the current line
 vim.opt.number = true
 -- Displays line numbers relative to the current cursor position
@@ -105,6 +109,7 @@ require("mason-lspconfig").setup({
 })
 
 vim.lsp.enable("lua_ls")
+vim.lsp.enable("expert")
 
 vim.diagnostic.config({
 	float = {
@@ -116,6 +121,37 @@ vim.diagnostic.config({
 	signs = true,
 	underline = true,
 	update_in_insert = false,
+})
+
+-- Snacks (file explorer + extras)
+vim.pack.add({
+	{ src = "https://github.com/folke/snacks.nvim" },
+	{ src = "https://github.com/folke/which-key.nvim" },
+	{ src = "https://github.com/echasnovski/mini.nvim" },
+	{ src = "https://github.com/zbirenbaum/copilot.lua" },
+})
+
+require("snacks").setup({
+	explorer = {
+		enabled = true,
+		layout = { position = "left" },
+	},
+})
+
+require("which-key").setup({})
+
+require("mini.icons").setup()
+require("mini.icons").mock_nvim_web_devicons()
+require("mini.statusline").setup({})
+
+-- Copilot
+require("copilot").setup({
+	suggestion = { enabled = true },
+	panel = { enabled = false },
+	filetypes = {
+		markdown = true,
+		help = true,
+	},
 })
 
 -- Conform
@@ -174,7 +210,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, { buffer = args.buf })
 		vim.keymap.set(
 			"n",
-			"<leader>e",
+			"<leader>cd",
 			vim.diagnostic.open_float,
 			{ buffer = args.buf, desc = "Show diagnostic details" }
 		)
@@ -209,6 +245,16 @@ end, { desc = "Show LSP status for current buffer" })
 vim.api.nvim_create_user_command("DiagnosticsAll", function()
 	vim.diagnostic.setqflist()
 end, { desc = "Show all workspace diagnostics in quickfix list" })
+
+-- File Explorer
+vim.keymap.set("n", "<leader>e", function()
+	Snacks.explorer()
+end, { desc = "File Explorer" })
+
+-- Which-key
+vim.keymap.set("n", "<leader>?", function()
+	require("which-key").show({ global = false })
+end, { desc = "Buffer Local Keymaps" })
 
 -- New UI opt-in
 require("vim._core.ui2").enable({})
