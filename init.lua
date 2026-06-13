@@ -96,6 +96,45 @@ vim.pack.add({
 })
 vim.cmd("colorscheme onenord")
 
+-- Treesitter (nvim-treesitter "main" branch — the Neovim 0.12+ rewrite).
+-- Parsers compile into stdpath("data")/site/parser and queries are symlinked
+-- there, so they're always on the runtimepath. Highlighting itself is started
+-- per-buffer by the FileType autocmd further down (vim.treesitter.start).
+vim.pack.add({
+	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+})
+
+require("nvim-treesitter").setup({})
+
+-- install() skips parsers that are already installed, so this is cheap on
+-- startup and only compiles missing ones (runs async in the background).
+require("nvim-treesitter").install({
+	"bash",
+	"c",
+	"eex",
+	"elixir",
+	"go",
+	"gomod",
+	"gosum",
+	"gowork",
+	"heex",
+	"html",
+	"javascript",
+	"json",
+	"lua",
+	"luadoc",
+	"markdown",
+	"markdown_inline",
+	"python",
+	"query",
+	"regex",
+	"rust",
+	"typescript",
+	"vim",
+	"vimdoc",
+	"yaml",
+})
+
 -- LSP Plugins
 vim.pack.add({
 	{ src = "https://github.com/neovim/nvim-lspconfig" },
@@ -170,6 +209,20 @@ require("conform").setup({
 		lsp_fallback = true,
 		async = false,
 	},
+})
+
+-- Treesitter syntax highlighting (built-in, Neovim 0.12+)
+-- Parsers/queries live in the site dir; this starts highlighting per buffer
+-- whenever a parser is available for the filetype (e.g. elixir).
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("treesitter_highlight", { clear = true }),
+	callback = function(args)
+		local ft = vim.bo[args.buf].filetype
+		local lang = vim.treesitter.language.get_lang(ft) or ft
+		if pcall(vim.treesitter.language.add, lang) then
+			pcall(vim.treesitter.start, args.buf, lang)
+		end
+	end,
 })
 
 -- Use squiggly underlines for diagnostics

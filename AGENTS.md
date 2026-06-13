@@ -1,7 +1,7 @@
 # Agent Guidelines for Neovim Configuration (nvim-next)
 
 ## Build/Lint/Test Commands
-- **Format Lua**: `stylua init.lua` (2 spaces, 120 columns)
+- **Format Lua**: `stylua init.lua` (tabs, 120 columns — stylua defaults, no config file)
 - **No tests**: This is a Neovim config — verify by opening nvim and testing functionality
 - **Check syntax**: Open files in nvim to validate Lua syntax
 
@@ -17,6 +17,7 @@
 - `init.lua`: Single-file config — all options, plugins, keymaps, and autocmds live here
 - `lsp/`: LSP server configurations (e.g., `lua_ls.lua`, `expert.lua`)
 - `nvim-pack-lock.json`: Plugin lockfile managed by `vim.pack.add`
+- `README.md`: User-facing docs (Treesitter setup, adding languages, cloning to a new machine)
 
 ## Plugin Management
 - Uses Neovim's built-in `vim.pack.add()` (no lazy.nvim)
@@ -31,6 +32,7 @@
 
 ## Current Plugins
 - `onenord.nvim` — colorscheme
+- `nvim-treesitter` (`main` branch) — Treesitter parsers; highlighting started via a `FileType` autocmd (`vim.treesitter.start`)
 - `nvim-lspconfig` — LSP server configs
 - `mason.nvim` + `mason-lspconfig.nvim` — LSP server installation
 - `snacks.nvim` — file explorer (`<leader>e`)
