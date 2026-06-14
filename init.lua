@@ -24,6 +24,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 -- Enables 24-bit RGB colors in the terminal
 vim.opt.termguicolors = true
+-- Default border for floating windows (LSP completion info popup, hover, etc.)
+vim.opt.winborder = "rounded"
 -- Configures the behavior of the insert mode completion menu
 vim.opt.completeopt = "menu,menuone,noselect,popup"
 -- Enables the overall completion feature.
