@@ -64,6 +64,15 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
+-- General Keymaps
+-- Use ; to enter command mode without pressing Shift
+vim.keymap.set({ "n", "v" }, ";", ":", { desc = "Enter command mode" })
+-- Navigate between window panes with Ctrl + h/j/k/l
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+
 -- Colorscheme
 vim.pack.add({
 	{
@@ -185,13 +194,36 @@ require("mini.statusline").setup({})
 
 -- Copilot
 require("copilot").setup({
-	suggestion = { enabled = true },
+	suggestion = {
+		enabled = true,
+		-- Show ghost text automatically as you type
+		auto_trigger = true,
+		keymap = {
+			-- Accept handled by custom <Tab> mapping below
+			accept = false,
+			accept_word = false,
+			accept_line = false,
+			next = "<M-]>",
+			prev = "<M-[>",
+			dismiss = "<C-]>",
+		},
+	},
 	panel = { enabled = false },
 	filetypes = {
 		markdown = true,
 		help = true,
 	},
 })
+
+-- Accept Copilot suggestion with <Tab>, otherwise insert a normal Tab
+vim.keymap.set("i", "<Tab>", function()
+	local copilot = require("copilot.suggestion")
+	if copilot.is_visible() then
+		copilot.accept()
+		return ""
+	end
+	return "\t"
+end, { expr = true, desc = "Accept Copilot suggestion or insert Tab" })
 
 -- Conform
 vim.pack.add({
