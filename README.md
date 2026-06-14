@@ -1,7 +1,35 @@
-# nvim-next
+# nvim
 
 A single-file Neovim configuration targeting **Neovim 0.12+**, using the built-in
 `vim.pack` plugin manager (no lazy.nvim) and built-in Treesitter.
+
+**Philosophy:** prefer native Neovim features over plugins wherever an equivalent
+exists — native LSP (`vim.lsp.buf.*`), `vim.diagnostic.*`, built-in Treesitter, and
+`vim.lsp.completion` (no completion plugin). Plugins are reserved for gaps with no
+native equivalent — chiefly the fuzzy picker (see below), since Neovim ships no
+native fuzzy finder.
+
+## File picker & fuzzy finding
+
+Provided by [`snacks.nvim`](https://github.com/folke/snacks.nvim)'s `picker` module
+(`Snacks.picker`). LSP navigation deliberately stays on native `vim.lsp.buf.*`, so
+the picker is used only for file finding and grep.
+
+| Keymap | Picker |
+| --- | --- |
+| `<leader><space>` | Smart find files |
+| `<leader>ff` | Find files |
+| `<leader>fg` | Find git files |
+| `<leader>fr` | Recent files |
+| `<leader>fc` | Find file in config dir |
+| `<leader>fp` | Projects |
+| `<leader>o` | Buffers (`dd` / `<C-d>` to delete) |
+| `<leader>/` | Live grep |
+| `<leader>sw` | Grep word / visual selection |
+| `<C-s>` | Grep open buffers |
+| `<leader>sb` | Search lines in buffer |
+| `<leader>sr` | Resume last picker |
+| `<leader>e` | File explorer (`Snacks.explorer`) |
 
 ## Treesitter syntax highlighting
 
@@ -27,8 +55,8 @@ require("nvim-treesitter").install({
 
 - The `main` branch is the Neovim 0.12+ rewrite. We pin to it with `version = "main"`.
 - `install({...})` compiles the listed grammars into
-  `~/.local/share/nvim-next/site/parser/*.so` and symlinks their queries into
-  `~/.local/share/nvim-next/site/queries/`. Both directories are always on the
+  `~/.local/share/nvim/site/parser/*.so` and symlinks their queries into
+  `~/.local/share/nvim/site/queries/`. Both directories are always on the
   runtimepath, so the parsers/queries are available regardless of plugin load state.
 - `install()` **skips parsers that are already installed**, so it's cheap to run on
   every startup — it only downloads/compiles what's missing, in the background.
@@ -84,8 +112,8 @@ To see what's available / installed:
 ## Cloning to a new machine
 
 ```sh
-git clone <this-repo> ~/.config/nvim-next
-NVIM_APPNAME=nvim-next nvim          # or just `nvim` if this is your default config
+git clone <this-repo> ~/.config/nvim
+nvim          # this is your default config
 ```
 
 On first launch:
@@ -123,5 +151,5 @@ highlighting (the autocmd / queries); no tree at all means the parser isn't inst
 
 - **Update parsers:** `:TSUpdate`
 - **Update the plugin:** standard `vim.pack` update flow (tracks the `main` branch)
-- **Parser/query install location:** `~/.local/share/nvim-next/site/`
+- **Parser/query install location:** `~/.local/share/nvim/site/`
   (`stdpath("data") .. "/site"`)

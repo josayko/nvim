@@ -13,7 +13,7 @@ vim.opt.laststatus = 3
 -- Displays the line number for the current line
 vim.opt.number = true
 -- Displays line numbers relative to the current cursor position
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 -- Time in milliseconds to wait for a mapped sequence to complete
 vim.opt.timeoutlen = 500
 -- Time in milliseconds of inactivity before calling CursorHold or writing to swap
@@ -184,6 +184,20 @@ require("snacks").setup({
 		enabled = true,
 		layout = { position = "left" },
 	},
+	-- Fuzzy picker — Neovim has no native fuzzy finder, so this is one of the
+	-- few places we reach for a plugin. LSP navigation stays native (LspAttach).
+	picker = { enabled = true },
+})
+
+-- The global `autocomplete = true` is buffer-scoped, so the built-in completion
+-- menu otherwise fires inside the picker's prompt buffer too. Disable it there so
+-- typing just filters the result list in real time.
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("snacks_picker_no_autocomplete", { clear = true }),
+	pattern = "snacks_picker_input",
+	callback = function(args)
+		vim.bo[args.buf].autocomplete = false
+	end,
 })
 
 require("which-key").setup({})
@@ -335,6 +349,57 @@ end, { desc = "Show all workspace diagnostics in quickfix list" })
 vim.keymap.set("n", "<leader>e", function()
 	Snacks.explorer()
 end, { desc = "File Explorer" })
+
+-- Snacks picker (fuzzy finder — no native Neovim equivalent).
+-- LSP navigation/diagnostics deliberately stay on native vim.lsp.* / vim.diagnostic.*.
+-- Files / buffers
+vim.keymap.set("n", "<leader><space>", function()
+	Snacks.picker.smart()
+end, { desc = "Smart Find Files" })
+vim.keymap.set("n", "<leader>ff", function()
+	Snacks.picker.files()
+end, { desc = "Find Files" })
+vim.keymap.set("n", "<leader>fg", function()
+	Snacks.picker.git_files()
+end, { desc = "Find Git Files" })
+vim.keymap.set("n", "<leader>fr", function()
+	Snacks.picker.recent()
+end, { desc = "Recent Files" })
+vim.keymap.set("n", "<leader>fc", function()
+	Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+end, { desc = "Find Config File" })
+vim.keymap.set("n", "<leader>fp", function()
+	Snacks.picker.projects()
+end, { desc = "Projects" })
+vim.keymap.set("n", "<leader>o", function()
+	Snacks.picker.buffers({
+		win = {
+			input = {
+				keys = {
+					["dd"] = "bufdelete",
+					["<c-d>"] = { "bufdelete", mode = { "n", "i" } },
+				},
+			},
+			list = { keys = { ["dd"] = "bufdelete" } },
+		},
+	})
+end, { desc = "Buffers" })
+-- Grep
+vim.keymap.set("n", "<leader>/", function()
+	Snacks.picker.grep()
+end, { desc = "Grep" })
+vim.keymap.set({ "n", "x" }, "<leader>sw", function()
+	Snacks.picker.grep_word()
+end, { desc = "Grep Word/Selection" })
+vim.keymap.set("n", "<C-s>", function()
+	Snacks.picker.grep_buffers()
+end, { desc = "Grep Open Buffers" })
+vim.keymap.set("n", "<leader>sb", function()
+	Snacks.picker.lines()
+end, { desc = "Buffer Lines" })
+vim.keymap.set("n", "<leader>sr", function()
+	Snacks.picker.resume()
+end, { desc = "Resume Last Picker" })
 
 -- Which-key
 vim.keymap.set("n", "<leader>?", function()

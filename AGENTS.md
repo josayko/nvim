@@ -1,9 +1,13 @@
-# Agent Guidelines for Neovim Configuration (nvim-next)
+# Agent Guidelines for Neovim Configuration (nvim)
 
 ## Build/Lint/Test Commands
 - **Format Lua**: `stylua init.lua` (tabs, 120 columns — stylua defaults, no config file)
 - **No tests**: This is a Neovim config — verify by opening nvim and testing functionality
 - **Check syntax**: Open files in nvim to validate Lua syntax
+
+## Design Principles
+- **Prefer built-in native Neovim features (latest, 0.12+) over plugins** wherever a native equivalent exists. Examples already in use: native LSP (`vim.lsp.buf.*`) for navigation/hover/rename, `vim.diagnostic.*`, built-in Treesitter (`vim.treesitter.*`), `vim.lsp.completion` (no completion plugin), the new core UI (`vim._core.ui2`).
+- **Only reach for a plugin when there is no native equivalent.** The fuzzy picker (snacks.nvim) is the main example — Neovim ships no native fuzzy finder. Do not route things that have a native API (LSP navigation, diagnostics, completion) through a plugin.
 
 ## Code Style
 - **Indentation**: Tabs (stylua config)
@@ -35,7 +39,7 @@
 - `nvim-treesitter` (`main` branch) — Treesitter parsers; highlighting started via a `FileType` autocmd (`vim.treesitter.start`)
 - `nvim-lspconfig` — LSP server configs
 - `mason.nvim` + `mason-lspconfig.nvim` — LSP server installation
-- `snacks.nvim` — file explorer (`<leader>e`)
+- `snacks.nvim` — file explorer (`<leader>e`) + fuzzy picker (file finders `<leader>f*`, grep `<leader>/`/`<leader>s*`, buffers `<leader>o`); LSP navigation stays native
 - `which-key.nvim` — keymap popup (`<leader>?`)
 - `mini.nvim` — icons + statusline
 - `copilot.lua` — AI ghost text suggestions
