@@ -36,7 +36,7 @@
 
 ## Current Plugins
 - `onenord.nvim` — colorscheme
-- `nvim-treesitter` (`main` branch) — Treesitter parsers; highlighting started via a `FileType` autocmd (`vim.treesitter.start`)
+- `nvim-treesitter` (`main` branch) — Treesitter parsers; highlighting started via a `FileType` autocmd (`vim.treesitter.start`). Requires the `tree-sitter` CLI on `PATH` to compile parsers (`npm install -g tree-sitter-cli` or `cargo install tree-sitter-cli`; Homebrew's `tree-sitter` ships only the library, not the CLI)
 - `nvim-lspconfig` — LSP server configs
 - `mason.nvim` + `mason-lspconfig.nvim` — LSP server installation
 - `snacks.nvim` — file explorer (`<leader>e`) + fuzzy picker (file finders `<leader>f*`, grep `<leader>/`/`<leader>s*`, buffers `<leader>o`); LSP navigation stays native

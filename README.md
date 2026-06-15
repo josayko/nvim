@@ -111,6 +111,33 @@ To see what's available / installed:
 
 ## Cloning to a new machine
 
+### Prerequisites
+
+The `nvim-treesitter` `main` branch compiles parsers by shelling out to the
+[`tree-sitter` CLI](https://github.com/tree-sitter/tree-sitter/tree/master/crates/cli),
+so it must be on your `PATH` **before** first launch. Install it with whichever
+toolchain you already have:
+
+```sh
+npm install -g tree-sitter-cli     # if you have node/npm (also works via mise/nvm)
+cargo install tree-sitter-cli      # if you have a Rust toolchain
+```
+
+> **Note:** Homebrew's `tree-sitter` formula installs only the C *library*
+> (`lib/`, `include/`), **not** the CLI binary — `brew install tree-sitter` alone
+> is not enough. Use `npm`/`cargo` as above.
+
+You also need a working **C compiler** (`cc`/`clang`/`gcc`) and `git` on `PATH` —
+the CLI invokes the compiler under the hood to build each parser.
+
+If `tree-sitter` is missing, parser installs fail on first launch with:
+
+```
+error: Error during "tree-sitter build": ... ENOENT ... (cmd): 'tree-sitter'
+```
+
+### First launch
+
 ```sh
 git clone <this-repo> ~/.config/nvim
 nvim          # this is your default config
@@ -120,16 +147,15 @@ On first launch:
 
 1. `vim.pack` clones every plugin listed in `init.lua` (revisions tracked in
    `nvim-pack-lock.json`).
-2. `require("nvim-treesitter").install({...})` compiles all listed parsers. This needs
-   a working **C compiler** (`cc`/`clang`/`gcc`) and `git` on `PATH` — that's the only
-   external requirement for Treesitter.
+2. `require("nvim-treesitter").install({...})` compiles all listed parsers via the
+   `tree-sitter` CLI (which in turn uses your C compiler).
 3. The first compile takes a moment; subsequent startups are instant because parsers
    are already installed and `install()` skips them.
 
 If a language isn't highlighting on the new machine, check:
 
 ```vim
-:checkhealth nvim-treesitter      " parser install + compiler status
+:checkhealth nvim-treesitter      " parser install + tree-sitter CLI / compiler status
 :InspectTree                       " confirms the parser is producing a tree
 :lua print(vim.treesitter.highlighter.active[vim.api.nvim_get_current_buf()] ~= nil)
 ```
